@@ -1,6 +1,6 @@
 # TODOs App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is available at https://todo-app-sqaure.vercel.app/
 
 ## Available Scripts
 
