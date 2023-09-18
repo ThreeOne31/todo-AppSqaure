@@ -7,6 +7,8 @@ import { DataTable } from './DataTable';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { Loading } from './Loading';
+import { ErrorOccured } from './ErrorOccured';
 
 type Todo = {
   id: number,
@@ -18,11 +20,13 @@ export type Columns = ColumnDef<Todo>[]
 
 function Home() {
   const queryClient = useQueryClient()
-  const { data } = useQuery('todos', () => 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['todos'], 
+    queryFn: () => 
     axios.get(`${baseUrl}/todos`, getAppSquareHeaders()).then(
       res => res.data
-    )
-  )
+    ),
+   })
 
   const deleteTodo = useMutation({
     mutationFn: (id: number) => {
@@ -44,7 +48,8 @@ function Home() {
     )},
     onSuccess: () => {
       queryClient.invalidateQueries('todos')
-    }
+    },
+    
   })
 
 
@@ -118,12 +123,16 @@ function Home() {
     <div className='container mt-4 mx-auto max-w-3xl min-w-fit'>
       <h1 className='mx-2 text-3xl text-gray-800'>Welcome back!</h1>
       <p className='mx-2 mb-4 text-gray-400'>Here's a list of your tasks for today.</p>
-      <div>
-        { data &&
-          <DataTable rows={todosData} columns={columns} />
-        }
-      </div>
-      <AddTodo />
+      { isLoading ? 
+        <Loading /> :
+        isError ? <ErrorOccured />:
+        <>
+          { data &&
+            <DataTable rows={todosData} columns={columns} />
+          }
+          <AddTodo />
+        </>
+      }
     </div>
   );
 }
