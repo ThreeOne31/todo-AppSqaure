@@ -36,12 +36,8 @@ export const DataTable = ((props: Props) => {
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    // debugTable: false,
-    // debugHeaders: false,
-    // debugColumns: false,
   })
 
-  console.log('Datatable todos: ', todos)
   return (
     <div className='p-2'>
       <div>
